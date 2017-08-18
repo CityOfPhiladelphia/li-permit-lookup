@@ -95,10 +95,30 @@
                   <script type="text/template" id="tmpl-result">
 				 
 				  
-                    <h2>Application #{{ application_number }}</h2>
+                    <h2> Application #{{ application_number }}</h2>
 
                     <div id="application-details">
-                      <dl>
+                     <table>
+						<tr>
+							<th scope="col"> Permit Number </th>
+							<th scope="col"> Permit Type </th>
+							<th scope="col"> Permit Description </th>
+							<th scope="col"> Permit Issue Date </th>
+							<th scope="col"> Permit Status </th>
+							<th scope="col"> Contractor Name </th>
+						</tr>
+						<tr>
+							<td> {{application_number}}</td>
+							<td> {{application_number}}</td>
+							<td> {{apdesc}}</td>
+							<td> {{apdttm}}</td>
+							<td> {{stat}}</td>
+							<td> {{comments}}</td>
+						</tr>
+					</table>
+					  
+					  
+					 <!--  <dl>
                         <dt>Location</dt>
                         <dd><b>{{ stno }} {{predir}} {{ stname }} {{ suffix}}</b></dd>
                       </dl>
@@ -125,7 +145,7 @@
 					  <dl>
                         <dt>Due Date of Latest Review</dt>
                         <dd>{{ suspdt }}</dd>
-                      </dl>
+                      </dl> -->
                    
                     </div>
                    
