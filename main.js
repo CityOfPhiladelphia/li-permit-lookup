@@ -1,4 +1,63 @@
-(function ($, _) {
+ <script src="https://js.arcgis.com/3.21/"></script>
+    <script>
+      require([
+        "dojo/dom", "dojo/on",
+        "esri/tasks/query", "esri/tasks/QueryTask", "dojo/domReady!"
+      ], function (dom, on, Query, QueryTask) {
+
+        var queryTask = new QueryTask("http://gis.phila.gov/arcgis/rest/services/LNI/LI_PERMITS_LOOKUP/FeatureServer/1");
+
+        var query = new Query();
+        query.returnGeometry = false;
+        query.outFields = [
+		  "PERMITNUMBER", "PERMITTYPE", "PERMITDESCRIPTION", "PERMITSTATUS",
+		  "STATUS", "CONTRACTORNAME", "PERMITISSUEDATE"
+        ];
+
+        on(dom.byId("execute"), "click", execute);
+
+        function execute () {
+          query.text = dom.byId("CONTRACTORNAME").value;
+          queryTask.execute(query, showResults);
+        }
+
+        function showResults (results) {
+          var resultItems = [];
+          var resultCount = results.features.length;
+          for (var i = 0; i < resultCount; i++) {
+            var featureAttributes = results.features[i].attributes;
+            for (var attr in featureAttributes) {
+              resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
+            }
+            resultItems.push("<br>");
+          }
+          dom.byId("info").innerHTML = resultItems.join("");
+        }
+      });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* (function ($, _) {
   // config
   var endpoint = '//gis.phila.gov/arcgis/rest/services/LNI/LI_PERMITS_LOOKUP/FeatureServer/1/query'
   // var FAILED_OR_INCOMPLETE_TEXT = "\
@@ -8,7 +67,7 @@
   //       BY THE DEPARTMENT TO THE PRIMARY APPLICANT; PLEASE CONTACT THE \
   //       PRIMARY APPLICANT AS LISTED ON THE APPLICATION FOR PERMIT.\
   //     ";
-  var FAILED_OR_INCOMPLETE_TEXT = "\
+  var //FAILED_OR_INCOMPLETE_TEXT = "\
         PLAN REVIEW COMPLETED; A REQUEST FOR ADDITIONAL INFORMATION LETTER HAS \
         BEEN ISSUED BY THE DEPARTMENT TO THE PRIMARY APPLICANT; PLEASE CONTACT \
         THE PRIMARY APPLICANT AS LISTED ON THE APPLICATION FOR PERMIT.\
@@ -110,3 +169,4 @@
     }
   }
 })(window.jQuery, window._)
+ */
