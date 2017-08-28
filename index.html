@@ -98,6 +98,7 @@
 							<th data-sort="Name">Contractor Name</th>
 							<th data-sort="Number">Permit Number</th>
 							<th data-sort="Name">Permit Type</th>
+							<th data-sort="Name">Permit Description</th>
 							<th data-sort="Date">Permit Issue Date</th>
 							<th data-sort="Name">Associated Address of Permit</th>
 							<th data-sort="Name">Permit Status</th>
@@ -105,12 +106,14 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td> {{CONTRACTORNAME}} </td>
-							<td> {{PERMITNUMBER}} </td>
-							<td> {{PERMITTYPE}} </td>
-							<td> {{PERMITISSUEDATE}} </td>
-							<td> {{ADDRESS}} </td>
-							<td> {{PERMITSTATUS}}</td>
+							<td> {{contractor}} </td>
+							<td> {{permit_number}} </td>
+							<td> {{permittype}} </td>
+							<td> {{descript}} </td>
+							<td> {{permitissuedttm}} </td>
+							<td> {{address}} </td>
+							<td> {{stat}}</td>
+							
 						</tr>
 					</tbody>
 				</table>

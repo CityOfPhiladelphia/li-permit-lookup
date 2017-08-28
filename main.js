@@ -5,13 +5,25 @@
         "esri/tasks/query", "esri/tasks/QueryTask", "dojo/domReady!"
       ], function (dom, on, Query, QueryTask) {
 
-        var queryTask = new QueryTask("http://gis.phila.gov/arcgis/rest/services/LNI/LI_PERMITS_LOOKUP/FeatureServer/1");
-
+       var queryTask = new QueryTask("http://gis.phila.gov/arcgis/rest/services/LNI/LI_PERMITS_LOOKUP/FeatureServer/1");
+        
+		// Rename/manipulate API response to fit our HTML template
+       var attrs = response.features[0].attributes
+	   var templateData = {
+			  permit_number:   				attrs.PERMITNUMBER,
+    		  stat:					        attrs.STATUS,
+    		  address:					    attrs.ADDRESS,
+    		  permitissuedttm:              formatDate(attrs.PERMITISSUEDATE),
+    		  descript:               		attrs.PERMITDESCRIPTION,
+    		  permittype:					attrs.PERMITTYPE,
+    		  contractor:				    attrs.CONTRACTORNAME,
+			  
+        }
         var query = new Query();
         query.returnGeometry = false;
         query.outFields = [
-		  "PERMITNUMBER", "PERMITTYPE", "PERMITDESCRIPTION", "PERMITSTATUS",
-		  "STATUS", "CONTRACTORNAME", "PERMITISSUEDATE"
+		  "PERMITNUMBER", "PERMITTYPE", "PERMITDESCRIPTION", 
+		  "STATUS", "CONTRACTORNAME", "PERMITISSUEDATE", "ADDRESS"
         ];
 
         on(dom.byId("execute"), "click", execute);
