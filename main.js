@@ -1,6 +1,6 @@
 (function ($, _) {
   // config
-  var endpoint = '//gis.phila.gov/arcgis/rest/services/LNI/LI_PERMIT_APPLICATION_STATUS/FeatureServer/1/query'
+  var endpoint = '//gis.phila.gov/arcgis/rest/services/LNI/LI_PERMITS_LOOKUP/FeatureServer/1/query'
   // var FAILED_OR_INCOMPLETE_TEXT = "\
   //       PLAN REVIEW COMPLETED; IF 'APPROVED' A BILLING STATEMENT HAS BEEN \
   //       ISSUED BY THE DEPARTMENT TO THE PRIMARY APPLICANT. IF 'INCOMPLETE' OR \

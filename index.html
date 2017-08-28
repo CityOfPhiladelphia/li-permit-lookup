@@ -91,11 +91,40 @@
                   </div>
                 </form>
 
-                <div id="result" class="pvm mbs">
+				<body>
+				<table class = "sortable"
+					<thead>
+						<tr>
+							<th data-sort="Name">Contractor Name</th>
+							<th data-sort="Number">Permit Number</th>
+							<th data-sort="Name">Permit Type</th>
+							<th data-sort="Date">Permit Issue Date</th>
+							<th data-sort="Name">Associated Address of Permit</th>
+							<th data-sort="Name">Permit Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td> {{CONTRACTORNAME}} </td>
+							<td> {{PERMITNUMBER}} </td>
+							<td> {{PERMITTYPE}} </td>
+							<td> {{PERMITISSUEDATE}} </td>
+							<td> {{ADDRESS}} </td>
+							<td> {{PERMITSTATUS}}</td>
+						</tr>
+					</tbody>
+				</table>
+				
+				
+				
+				
+				
+				
+               <!--<div id="result" class="pvm mbs">
                   <script type="text/template" id="tmpl-result">
 				 
 				  
-                    <h2>Application #{{ application_number }}</h2>
+                    <h2> Contractor Name{{ CONTRACTORNAME }}</h2>
 
                     <div id="application-details">
                       <dl>
@@ -127,7 +156,7 @@
                         <dd>{{ suspdt }}</dd>
                       </dl>
                    
-                    </div>
+                    </div> -->
                    
                   <p class="mtl"> If a review is past due, please email <a href="mailto:permithelp@phila.gov">permithelp@phila.gov</a></p>
                   </script>
