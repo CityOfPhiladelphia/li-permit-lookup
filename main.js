@@ -1,6 +1,6 @@
 (function ($, _) {
   // config
-  var endpoint = '//gis.phila.gov/arcgis/rest/services/LNI/LI_PERMIT_APPLICATION_STATUS/FeatureServer/1/query'
+  var endpoint = '//gis.phila.gov/arcgis/rest/services/LNI/LI_PERMITS_LOOKUP/FeatureServer/1/query'
   // var FAILED_OR_INCOMPLETE_TEXT = "\
   //       PLAN REVIEW COMPLETED; IF 'APPROVED' A BILLING STATEMENT HAS BEEN \
   //       ISSUED BY THE DEPARTMENT TO THE PRIMARY APPLICANT. IF 'INCOMPLETE' OR \
@@ -8,13 +8,8 @@
   //       BY THE DEPARTMENT TO THE PRIMARY APPLICANT; PLEASE CONTACT THE \
   //       PRIMARY APPLICANT AS LISTED ON THE APPLICATION FOR PERMIT.\
   //     ";
-  var FAILED_OR_INCOMPLETE_TEXT = "\
-        PLAN REVIEW COMPLETED; A REQUEST FOR ADDITIONAL INFORMATION HAS \
-        BEEN ISSUED BY THE DEPARTMENT TO THE PRIMARY APPLICANT.\
-      ",
-      DATE_FORMAT = 'dddd, MMMM Do YYYY',
-      INVALID_DATE_TEXT = 'Review Not Yet Completed',
-	  NO_COMPDTTM = 'PLAN REVIEW NOT YET COMPLETED; PLEASE ALLOW UNTIL THE SCHEDULED DUE DATE FOR A COMPLETED REVIEW'
+  var DATE_FORMAT = 'dddd, MMMM Do YYYY'
+      
 
   var params = qs(window.location.search.substr(1))
   // Use mustache.js style brackets in templates
@@ -29,7 +24,7 @@
   if (params.id) {
     resultContainer.html(templates.loading)
     var requestParams = {
-      where: "APNO = '" + params.id + "'",
+      where: "CONTRACTORNAME = '" + params.id + "'",
       outFields: '*',
       f: 'pjson',
     }
@@ -37,7 +32,7 @@
       var features = response.features
       if (!features || features.length < 1) {
         // If there's no feature, indicate such
-        resultContainer.html(templates.error({ application_number : params.id }))
+        resultContainer.html(templates.error({ contractor : params.id }))
       } else {
         // Otherwise display the first feature (which should be the only
         // feature)
@@ -45,19 +40,7 @@
         // Rename/manipulate API response to fit our HTML template
         var attrs = response.features[0].attributes
 
-        // handle comments
-        var status = attrs.STATUS,
-            comments = attrs.COMMENTS
-
-        // if failed, or incomplete and there's a review date
-    		if (status === 'FAILED' || (status === 'INCOMPLETE' && attrs.COMPDTTM)) {
-          comments = FAILED_OR_INCOMPLETE_TEXT
-  		  }
-			
-		//if status is incomplete and there is no COMPDTTM	
-	    	if (status === 'INCOMPLETE' && (!attrs.COMPDTTM || attrs.COMPDTTM === '')) {
-			comments = NO_COMPDTTM 
-		 }
+  
 			
 		console.log('testing')	
 			
@@ -84,18 +67,16 @@
         }
 
         var templateData = {
-          application_number:   attrs.APNO,
-          comments:             comments,
-    		  stat:					        status,
-    		  stno:					        attrs.STNO,
-    		  predir:				        attrs.PREDIR,
-    		  stname:				        attrs.STNAME,
-    		  suffix:				        attrs.SUFFIX,
-    		  apdttm:               formatDate(attrs.APDTTM),
-    		  suspdt:               formatDate(attrs.SUSPDT),
-    		  loc:					        attrs.LOC,
-    		  apdesc:				        attrs.APDESC,
-			  compdttm:				formatDate(attrs.COMPDTTM),
+			  
+			  address: 				attrs.ADDRESS,
+			  ownername: 			attrs.OWNERNAME,
+			  permit_number:		attrs.PERMITNUMBER,
+			  permit_type:			attrs.PERMITTYPE,
+			  permit_descript:		attrs.PERMITDESCRIPTION,
+			  stat:					attrs.PERMITSTATUS,
+			  contractor:			attrs.CONTRACTORNAME,
+			  
+			  
         }
 
         // Render template
