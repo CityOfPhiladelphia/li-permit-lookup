@@ -83,7 +83,7 @@
         resultContainer.html(templates.result(templateData))
       }
     }).fail(function () {
-      resultContainer.html(templates.error({ application_number : params.id }))
+      resultContainer.html(templates.error({ contractor : params.id }))
     })
   }
 
