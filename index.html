@@ -13,7 +13,7 @@
         "esri/tasks/query", "esri/tasks/QueryTask", "dojo/domReady!"
       ], function (dom, on, Query, QueryTask) {
 
-        var queryTask = new QueryTask("https://gis.phila.gov/arcgis/rest/services/LNI/LI_PERMITS_LOOKUP/FeatureServer/1");
+        var queryTask = new QueryTask("https://gis.phila.gov/arcgis/rest/services/LNI/LI_PERMITS_LOOKUP/FeatureServer/1/query");
 
         var query = new Query();
         query.returnGeometry = false;
