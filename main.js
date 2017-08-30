@@ -1,8 +1,38 @@
 function ($, dom, on, Query, QueryTask, _) {
   // config
   var endpoint = '//gis.phila.gov/arcgis/rest/services/LNI/LI_PERMITS_LOOKUP/FeatureServer/1/query'
-
-
+  
+  var params = qs(window.location.search.substr(1))
+  // Use mustache.js style brackets in templates
+  _.templateSettings = { interpolate: /\{\{(.+?)\}\}/g }
+  var templates = {
+    result: _.template($('#tmpl-result').html()),
+    error: _.template($('#tmpl-error').html()),
+    loading: $('#tmpl-loading').html()
+  }
+  var resultContainer = $('#result')
+  
+  
+  if (params.id) {
+    resultContainer.html(templates.loading)
+    var requestParams = {
+      where: 'CONTRACTORNAME = ' + params.id,
+      outFields: '*',
+      f: 'pjson',
+    }
+    $.getJSON(endpoint, requestParams, function (response) {
+      var features = response.features
+      if (features.length < 1) {
+        // If there's no feature, indicate such
+        resultContainer.html(templates.error({ CONTRACTORNAME : params.id }))
+      } else {
+        // Otherwise display the first feature (which should be the only
+        // feature)
+  
+		// Rename/manipulate API response to fit our HTML template
+       var attrs = response.features[0].attributes
+  
+  
        var queryTask = new QueryTask("http://gis.phila.gov/arcgis/rest/services/LNI/LI_PERMITS_LOOKUP/FeatureServer/1");
         
 		// Rename/manipulate API response to fit our HTML template
@@ -36,14 +66,46 @@ function ($, dom, on, Query, QueryTask, _) {
           var resultCount = results.features.length;
           for (var i = 0; i < resultCount; i++) {
             var featureAttributes = results.features[i].attributes;
-            for (var attr in featureAttributes) {
-              resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
+            for (var attrs in featureAttributes) {
+              resultItems.push("<b>" + attrs + ":</b>  " + featureAttributes[attrs] + "<br>");
             }
             resultItems.push("<br>");
           }
           dom.byId("info").innerHTML = resultItems.join("");
         }
-      });
+      
+  var params = qs(window.location.search.substr(1))
+  // Use mustache.js style brackets in templates
+  _.templateSettings = { interpolate: /\{\{(.+?)\}\}/g }
+  var templates = {
+    result: _.template($('#tmpl-result').html()),
+    error: _.template($('#tmpl-error').html()),
+    loading: $('#tmpl-loading').html()
+  }
+  
+
+ // decode a uri into a kv representation :: str -> obj
+  // https://github.com/yoshuawuyts/sheet-router/blob/master/qs.js
+  function qs (uri) {
+    var obj = {}
+    var reg = new RegExp('([^?=&]+)(=([^&]*))?', 'g')
+    uri.replace(/^.*\?/, '').replace(reg, map)
+    return obj
+
+    function map (a0, a1, a2, a3) {
+      obj[window.decodeURIComponent(a1)] = window.decodeURIComponent(a3)
+    }
+  }
+})(window.jQuery, window._)
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	
 
 
 
