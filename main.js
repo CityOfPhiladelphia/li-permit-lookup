@@ -1,9 +1,7 @@
- <script src="https://js.arcgis.com/3.21/"></script>
-    <script>
-      require([
-        "dojo/dom", "dojo/on",
-        "esri/tasks/query", "esri/tasks/QueryTask", "dojo/domReady!"
-      ], function (dom, on, Query, QueryTask) {
+function ($, dom, on, Query, QueryTask, _) {
+  // config
+  var endpoint = '//gis.phila.gov/arcgis/rest/services/LNI/LI_PERMITS_LOOKUP/FeatureServer/1/query'
+
 
        var queryTask = new QueryTask("http://gis.phila.gov/arcgis/rest/services/LNI/LI_PERMITS_LOOKUP/FeatureServer/1");
         
@@ -46,7 +44,7 @@
           dom.byId("info").innerHTML = resultItems.join("");
         }
       });
-    </script>
+
 
 
 
