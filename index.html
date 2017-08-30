@@ -1,57 +1,227 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
-    <title>Query State Info without Map</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script src="https://js.arcgis.com/3.21/"></script>
-    <script>
-      require([
-        "dojo/dom", "dojo/on",
-        "esri/tasks/query", "esri/tasks/QueryTask", "dojo/domReady!"
-      ], function (dom, on, Query, QueryTask) {
+    <title>L+I Permit Application Tracker | phila.gov</title>
+    <link rel='icon' type='image/x-icon' href="//cityofphiladelphia.github.io/patterns/images/favicon.ico">
+    <meta name="description" content="">
 
-        var queryTask = new QueryTask("https://gis.phila.gov/arcgis/rest/services/LNI/LI_PERMITS_LOOKUP/FeatureServer/1/query");
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
-        var query = new Query();
-        query.returnGeometry = false;
-        query.outFields = [
-         	"PERMITNUMBER", "PERMITTYPE", "PERMITDESCRIPTION", 
-			"STATUS", "CONTRACTORNAME", "PERMITISSUEDATE", "ADDRESS"
-        ];
+    <!--Ionicons are optional-->
+    <link rel="stylesheet" href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
-        on(dom.byId("execute"), "click", execute);
+    <!--pattern stylesheet includes foundation css -->
+    <link rel="stylesheet" href="//cityofphiladelphia.github.io/patterns/dist/1.4.1/css/patterns.css">
 
-        function execute () {
-          query.text = dom.byId("ContractorName1").value;
-          queryTask.execute(query, showResults);
-        }
+    <link rel="stylesheet" href="styles.css">
 
-        function showResults (results) {
-          var resultItems = [];
-          var resultCount = results.features.length;
-          for (var i = 0; i < resultCount; i++) {
-            var featureAttributes = results.features[i].attributes;
-            for (var attr in featureAttributes) {
-              resultItems.push("<b>" + attr + ":</b>  " + featureAttributes[attr] + "<br>");
-            }
-            resultItems.push("<br>");
-          }
-          dom.byId("info").innerHTML = resultItems.join("");
-        }
-      });
-    </script>
+    <link rel="canonical" href="">
+
   </head>
 
   <body>
-    Company name :
-    <input type="text" id="ContractorName1" value="DOUGHERTY ELECTRIC">
-    <input id="execute" type="button" value="Get Details">
-    <br />
-    <br />
-    <div id="info" style="padding:5px; margin:5px; background-color:#eee;">
+
+    <!-- Google Tag Manager [phila.gov] -->
+      <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MC6CR2"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-MC6CR2');</script>
+    <!-- End Google Tag Manager -->
+
+    <div class="site" id="page">
+      <!-- Begin .header -->
+<header data-swiftype-index='false' class="site-header">
+  <div class="row site-branding">
+    <div class="small-24 medium-12 columns">
+      <a href="https://beta.phila.gov" class="logo pam">
+        <img src="//cityofphiladelphia.github.io/patterns/images/city-of-philadelphia-white.png" alt="City of Philadelphia">
+      </a>
+      <h1 class="site-title">phila.gov</h1>
+      <h2 class="site-description">City of Philadelphia</h2>
     </div>
+    <div class="small-24 medium-12 columns">
+      <form class="search" data-global-search>
+  <input type="text" placeholder="Search beta.phila.gov" class="search-field"><input type="submit">
+</form>
+
+    </div>
+  </div>
+  <div class="row expanded">
+  <div class="columns">
+    <div class="row">
+      <div class="large-24 columns">
+        <nav>
+          <ul class="breadcrumbs">
+            <li><a href="https://beta.phila.gov">Home</a></li>
+            <li><a href="http://www.phila.gov/li">Licenses and Inspections</a></li>
+            <li>Permit Application Tracker</li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+
+</header>
+
+      <article data-swiftype-name="body" data-swiftype-type="text">
+        <div class="row" id="main-row">
+          <div class="large-24 columns">
+
+            <h1 class="contrast">Licenses and Inspections Permit Application Tracker</h1>
+
+            <p class="pvxs mbs">You can use this tool to track the status of your L+I permit application.</p>
+			<p class="pvxs mbs"><b>NOTE:</b> Actions made in the last 24 hours may not be reflected on site</p>
+
+            <div class="row pvm mbs">
+              <div class="small-24 medium-17 columns">
+
+                <form>
+                  <label for="id">Type in your application number.</label>
+                  <div class="search">
+                    <input type="text" placeholder="For example: 10901544" class="search-field" id="id" name="id">
+                    <input type="submit">
+                  </div>
+                </form>
+
+                <div id="result" class="pvm mbs">
+                  <script type="text/template" id="tmpl-result">
+				 
+				  
+                    <h2>Application #{{ application_number }}</h2>
+
+                    <div id="application-details">
+                      <dl>
+                        <dt>Location</dt>
+                        <dd><b>{{ stno }} {{predir}} {{ stname }} {{ suffix}}</b></dd>
+                      </dl>
+					  
+					  
+					  <dl>
+                        <dt>Application Description</dt>
+                        <dd>{{ apdesc }}</dd>
+                      </dl>
+					  <dl>
+                        <dt>Status</dt>
+                        <dd>{{ stat }}</dd>
+                      </dl>
+					  <dl>
+                        <dt>Comments</dt>
+                        <dd>{{ comments }}</dd>
+                      </dl>
+					  
+
+					  <dl>
+                        <dt>Application Submission Date</dt>
+                        <dd>{{ apdttm }}</dd>
+                      </dl>
+					  <dl>
+                        <dt>Due Date of Latest Review</dt>
+                        <dd>{{ suspdt }}</dd>
+                      </dl>
+					  <dl>
+                        <dt>Date Review Completed</dt>
+                        <dd>{{ compdttm }}</dd>
+                      </dl>
+                    </div>
+                   
+                  <p class="mtl"> If a review is past due, please email <a href="mailto:permithelp@phila.gov">permithelp@phila.gov</a></p>
+                  </script>
+
+                  <script type="text/template" id="tmpl-error">
+                    <span class="error">Application #<b>{{ application_number }}</b> was not found. Please contact <a href="mailto:permithelp@phila.gov">permithelp@phila.gov</a> for inquiries.</span>
+                  </script>
+
+                  <script type="text/template" id="tmpl-loading">
+                    <div><i class="fa fa-spinner fa-lg spin"></i> Loading...</div>
+                  </script>
+                </div>
+
+              </div>
+
+            <aside id="secondary" class="related plm-mu small-24 medium-6 columns">
+              <h3>Related Content</h3>
+              <ul>
+                <!-- TODO -->
+                <!-- Add related content links; see examples below -->
+
+                <li><a class="external" href="http://property.phila.gov/">City of Philadelphia - Property Browser</a></li>
+                <li><a class="external" href="http://www.phila.gov/li/aboutus/Pages/Contact.aspx">L+I Contact Information</a></li>
+                <li><a class="external" href="http://www.phila.gov/li/Pages/faq.aspx">L+I FAQ</a></li> 
+              </ul>
+            </aside>
+
+          </div>
+        </div>
+    </div><!-- End #page -->
+    <div class="row feedback">
+      <div class="small-24 columns">
+        <div class="panel center mbl"><p>We're still working on this page's design and content. <a href="http://beta.phila.gov/feedback/">How can we make it better?</a></p></div>
+      </div>
+    </div>
+  </article>
+    <!-- Begin Footer -->
+<footer data-swiftype-index='false' class="site-footer">
+  <section class="fat">
+    <div class="row">
+      <div class="large-8 columns">
+        <h1>Government</h1>
+        <nav>
+          <ul>
+            <li><a href="http://beta.phila.gov">beta.phila.gov</a></li>
+            <li><a href="http://beta.phila.gov/departments">City Government Directory</a></li>
+            <li><a href="http://www.phila.gov/mayor">Mayor's Office</a></li>
+            <li><a href="http://iframe.publicstuff.com/#?client_id=242">Report an Issue / 311</a></li>
+            <li><a href="http://cityofphiladelphia.wordpress.com/">News</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="large-16 columns">
+        <h1>Browse beta.phila.gov</h1>
+        <nav>
+          <ul class="columns-2">
+            <li><a href="http://beta.phila.gov/browse/health">Health</a></li>
+            <li><a href="http://beta.phila.gov/browse/legal">Legal</a></li>
+            <li><a href="http://beta.phila.gov/browse/payments-and-taxes">Payments and Taxes</a></li>
+            <li><a href="http://beta.phila.gov/browse/permits-licenses">Permits and Licenses</a></li>
+            <li><a href="http://beta.phila.gov/browse/property-housing">Property and Housing</a></li>
+            <li><a href="http://beta.phila.gov/browse/public-safety">Public Safety</a></li>
+            <li><a href="http://beta.phila.gov/browse/streets-and-utilities">Streets and Utilities</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </section>
+  <div class="row classic center">
+    <div class="columns">
+      <nav>
+        <ul class="inline-list">
+          <li><a href="http://beta.phila.gov/terms-of-use">Terms of use</a></li>
+          <li><a href="http://www.phila.gov/privacy/pdfs/FinalCityOpenRecords.pdf">Right to know (pdf)</a></li>
+          <li><a href="http://beta.phila.gov/privacypolicy">Privacy Policy</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<!-- End Footer -->
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/6.1.2/foundation.min.js"></script>
+
+    <script src="//cityofphiladelphia.github.io/patterns/dist/1.4.1/js/patterns.min.js"></script>
+	 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+    <script src="main.js"></script>
   </body>
 </html>
