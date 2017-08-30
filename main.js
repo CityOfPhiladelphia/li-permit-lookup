@@ -33,7 +33,7 @@ function ($, dom, on, Query, QueryTask, _) {
        var attrs = response.features[0].attributes
   
   
-       var queryTask = new QueryTask("http://gis.phila.gov/arcgis/rest/services/LNI/LI_PERMITS_LOOKUP/FeatureServer/1");
+       var queryTask = new QueryTask("http://gis.phila.gov/arcgis/rest/services/LNI/LI_PERMITS_LOOKUP/FeatureServer/1/query");
         
 		// Rename/manipulate API response to fit our HTML template
        var attrs = response.features[0].attributes
